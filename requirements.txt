@@ -1,0 +1,6 @@
+paramiko==3.0.0
+types-paramiko==3.0.0.4
+python-dotenv==1.0.0
+pydantic==1.10.5
+black==23.1.0
+mypy==1.0.1
