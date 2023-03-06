@@ -24,7 +24,7 @@ def inside(ssh: paramiko.SSHClient) -> None:
     choise = cl.exec_commands(
         [
             "portsnap fetch",
-            # "portsnap extract",
+            "portsnap extract",
         ]
     ).exec_command_with_choise(f"echo /usr/ports/*/*{package.PACKAGE}*")
     print(f"You choosed: {choise}")
