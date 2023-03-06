@@ -18,17 +18,17 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def inside(client: paramiko.SSHClient) -> None:
-    # c_client - custom client
-    c_client = ExecCommand(client)
-    choise = c_client.exec_commands(
+def inside(ssh: paramiko.SSHClient) -> None:
+    # cl - custom client
+    cl = ExecCommand(ssh)
+    choise = cl.exec_commands(
         [
             "portsnap fetch",
             # "portsnap extract",
         ]
     ).exec_command_with_choise(f"echo /usr/ports/*/*{package.PACKAGE}*")
-    print(choise)
-    c_client.exec_command(f"cd {choise}; ls").exec_commands(
+    print(f"You choosed: {choise}")
+    cl.exec_command(f"cd {choise}; ls").exec_commands(
         ["make", "make config-recursive", "make install", "make clean"]
     )
 
@@ -46,6 +46,7 @@ def main():
         )
         logging.info(f"{server.USERNAME} connected to {server.HOST}:{server.PORT}")
 
+        client.invoke_shell()
         inside(client)
     except AttributeError as e:
         logging.error(e)

@@ -1,11 +1,13 @@
 import paramiko
 import logging
+import time
 
 
 class ExecCommand:
     def __init__(self, client: paramiko.SSHClient):
         self.client = client
         self.data: str | None = None
+        self.pause = 3
 
     def _data(self, data: bytes) -> None:
         if data is not None:
@@ -13,6 +15,7 @@ class ExecCommand:
 
     def exec_command(self, command: str):
         stdin, stdout, stderr = self.client.exec_command(command)
+        time.sleep(self.pause)
         data = stdout.read() + stderr.read()
         if str(data).startswith("fatal"):
             logging.error(data)
@@ -20,11 +23,9 @@ class ExecCommand:
         else:
             logging.info(data)
             self._data(data)
-        print(data)
-        print("\n")
         return self
 
-    def exec_command_with_choise(self, command: str):
+    def exec_command_with_choise(self, command: str) -> str | None:
         self.exec_command(command)
         dict_of_packages = {}
         if self.data is not None:
@@ -38,11 +39,9 @@ class ExecCommand:
         except KeyError as e:
             mis = f"There are no package with num {e}"
             logging.error(mis)
-            print(mis)
         except ValueError as e:
             mis = "Please input number"
             logging.error(mis)
-            print(mis)
 
     def exec_commands(self, commands: list[str]):
         for command in commands:
