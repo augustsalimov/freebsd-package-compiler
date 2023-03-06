@@ -1,4 +1,12 @@
-# freebsd-package-compiler
+# Freebsd-package-compiler
 
-pip install -U pip
-pip install -r requirements.txt
+## Installing and running
+
+```
+chmod +x init.sh 
+sudo ./init.sh
+```
+<br>
+Fill in `.env` file. <br>
+<br>
+`python main.py`
